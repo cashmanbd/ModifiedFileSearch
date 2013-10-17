@@ -19,7 +19,7 @@ import modifiedfilesearch.data.FileInfoImpl;
  * @author Brendan Cashman
  * @since 1.7
  */
-public class SpecifiedFileVisitor implements FileVisitor<Path> {
+class SpecifiedFileVisitor implements FileVisitor<Path> {
 
     /**
      * Creates a SpecifiedFileVisitor to record information about specified
@@ -32,7 +32,7 @@ public class SpecifiedFileVisitor implements FileVisitor<Path> {
      * will be stored. 
      *
      */
-    public SpecifiedFileVisitor(Queue<FileInfo> fileInfoQueue, String syntaxAndPattern) {
+    SpecifiedFileVisitor(Queue<FileInfo> fileInfoQueue, String syntaxAndPattern) {
         this.fileInfoQueue = fileInfoQueue;
         this.fileTypeMatcher = FileSystems.getDefault().getPathMatcher(syntaxAndPattern);
     }

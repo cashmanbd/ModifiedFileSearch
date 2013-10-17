@@ -16,25 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayer;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import modifiedfilesearch.data.DisplayStringImpl;
@@ -52,12 +34,12 @@ import modifiedfilesearch.utils.NamedThreadFactory;
  * @author Brendan Cashman
  * @since 1.7
  */
-public class ModifiedFileSearch implements ActionListener {
+class ModifiedFileSearch implements ActionListener {
 
     /**
      * 
      */
-    public ModifiedFileSearch() {
+    private ModifiedFileSearch() {
         searchStatusQueue = new ConcurrentLinkedQueue<DisplayString>();
         infoQueue = new ConcurrentLinkedQueue<DisplayString>();
         fileInfoQueue = new ConcurrentLinkedQueue<FileInfo>();
@@ -69,7 +51,7 @@ public class ModifiedFileSearch implements ActionListener {
      * Creates and configures the GUI components for this application.
      *
      */
-    public void createUI() {
+    private void createUI() {
 
         // Make sure the button will activate if it has focus and the
         // user hits the enter key.
@@ -127,7 +109,6 @@ public class ModifiedFileSearch implements ActionListener {
         group.add(weekButton);
         group.add(hourButton);
         JPanel modifiedPanel = new JPanel();
-        BoxLayout modBoxLayout = new BoxLayout(modifiedPanel, BoxLayout.LINE_AXIS);
         modifiedPanel.add(everButton);
         modifiedPanel.add(thirtyDayButton);
         modifiedPanel.add(weekButton);
@@ -225,7 +206,7 @@ public class ModifiedFileSearch implements ActionListener {
             public void stateChanged(ChangeEvent e) {
                 JSlider source = (JSlider) e.getSource();
                 if (!source.getValueIsAdjusting()) {
-                    int fps = (int) source.getValue();
+                    int fps = source.getValue();
                     searchStatusLayerUI.setFPS(fps);
                 }
             }
@@ -240,7 +221,6 @@ public class ModifiedFileSearch implements ActionListener {
         sliderPanel.add(new JLabel("Adjust Display Speed:"));
         sliderPanel.add(fpsSlider);
         sliderPanel.setBorder(BorderFactory.createEtchedBorder());
-        BoxLayout boxLayout = new BoxLayout(footerPanel, BoxLayout.LINE_AXIS);
         footerPanel.add(sliderPanel);
         footerPanel.add(Box.createRigidArea(new Dimension(40, 0)));
         footerPanel.add(pauseButton);
@@ -280,7 +260,7 @@ public class ModifiedFileSearch implements ActionListener {
         frame.getContentPane().add(footerPanel, BorderLayout.SOUTH);
 
         frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -373,9 +353,9 @@ public class ModifiedFileSearch implements ActionListener {
     }
 
     private enum ButtonState {
-
         Pause, Restart
-    };
+    }
+
     private static final String SEARCH_COMMAND = "StartModifiedSearch";
     private static final long MS_IN_HOUR = 3600000;
     private boolean isWalking = false;
@@ -401,10 +381,6 @@ public class ModifiedFileSearch implements ActionListener {
     private JTextField fileTypeTF;
     private JTextField pathField;
 
-    /**
-     * 
-     * @param args
-     */
     public static void main(String[] args) {
         final ModifiedFileSearch finder = new ModifiedFileSearch();
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
