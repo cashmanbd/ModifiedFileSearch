@@ -61,9 +61,6 @@ class ModifiedFileSearch implements ActionListener {
         directoryLabel.setPreferredSize(new Dimension(140, 20));
 
         dirEntryLayerUI = new DirectoryEntryLayerUI();
-        // In speaking with Amol on the phone, he informed me how the software
-        // needs to make native calls for some tasks. I had no idea that one of 
-        // those tasks would be accessing the user's home directory bug 4787931, 6519127.
         String defaultPath = System.getProperty("user.home");
         pathField = new JTextField();
         pathField.setColumns(30);
@@ -158,10 +155,10 @@ class ModifiedFileSearch implements ActionListener {
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                 // The pause/restart functionality is intended to effect only the 
+                // The pause/restart functionality is intended to effect only the
                 // display of the search. The inspected of files will continue, and 
                 // possibly finish. Once the application is restarted, the status will
-                // be displayed as if the file walk was still occuring.  
+                // be displayed as if the file walk was still occurring.
                 ButtonState currentState = ButtonState.valueOf(pauseButton.getText());
                 switch (currentState) {
                     case Pause:
@@ -243,7 +240,7 @@ class ModifiedFileSearch implements ActionListener {
         }
 
         JScrollPane editorScrollPane =
-                new JScrollPane(new JLayer<JComponent>(editorPane, infoLayerUI));
+                new JScrollPane(new JLayer(editorPane, infoLayerUI));
         editorScrollPane.setVerticalScrollBarPolicy(
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         editorScrollPane.setHorizontalScrollBarPolicy(
@@ -255,7 +252,7 @@ class ModifiedFileSearch implements ActionListener {
         frame.getContentPane().setLayout(new BorderLayout());
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                editorScrollPane, new JLayer<JComponent>(panel, searchStatusLayerUI));
+                editorScrollPane, new JLayer(panel, searchStatusLayerUI));
         frame.getContentPane().add(splitPane, BorderLayout.CENTER);
         frame.getContentPane().add(footerPanel, BorderLayout.SOUTH);
 
@@ -266,7 +263,7 @@ class ModifiedFileSearch implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(final ActionEvent e) {
         // This actionPerformed is intended to only handle an event that starts the search.
         if (e.getActionCommand() == null
                 || !e.getActionCommand().equals(SEARCH_COMMAND)) {
@@ -319,7 +316,7 @@ class ModifiedFileSearch implements ActionListener {
         // regexp will remove '.' and ',', returning just file types
         String[] strsToAdd = enteredTypes.split("\\s*(,|\\s|\"|\')\\s*");
         boolean first = true;
-        // Using the "glob" sytax defined here:
+        // Using the "glob" syntax defined here:
         // http://docs.oracle.com/javase/7/docs/api/java/nio/file/FileSystem.html#getPathMatcher(java.lang.String)
         StringBuilder pttrBuilder = new StringBuilder("glob:*.{");
         for (String str : strsToAdd) {
@@ -340,8 +337,8 @@ class ModifiedFileSearch implements ActionListener {
         final String pattern = pttrBuilder.toString();
 
         isWalking = true;
-        // Start 2 thread, one to execute the file walk and one to translate
-        // the output of the filewalk to a format for the status components.
+        // Start 2 threads, one to execute the file walk and one to translate
+        // the output of the file walk to a format for the status components.
         
         TranslateFileInfoTask translateTask = new TranslateFileInfoTask();
         translateTaskFuture =
